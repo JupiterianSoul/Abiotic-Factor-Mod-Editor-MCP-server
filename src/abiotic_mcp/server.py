@@ -94,8 +94,12 @@ def upsert_datatable_rows(row_asset_class: str, table: str, rows: list[dict]) ->
 
     Mods add one asset per row, stored at /<Mod>/DataTables/<table>/<row_name>.
     Each entry is {"row_name": str, "override_existing_row": bool, "values": {...}},
-    with values in the snake_case form that read_asset returns. Set
-    override_existing_row to replace a vanilla row of the same name.
+    with values in the snake_case form that read_asset returns.
+
+    Fields left out of a new row keep struct defaults, not vanilla values. To
+    change part of a vanilla row, use clone_row with override_existing_row=True
+    and the same row name, then set only what differs. When a row refers to
+    another row in this mod, use <mod_prefix>_<row_name> (see editor_status).
     """
     return bridge.call("upsert_mod_rows", row_asset_class=row_asset_class, table=table, rows=rows)
 

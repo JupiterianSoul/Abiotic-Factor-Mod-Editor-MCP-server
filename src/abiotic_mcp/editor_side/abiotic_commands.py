@@ -17,6 +17,7 @@ import unreal
 _PROP_RE = re.compile(r"^- ``(\w+)`` \((.+?)\):", re.M)
 _RAW_TEXT_PREFIXES = ("(", "NSLOCTEXT(", "LOCTABLE(", "INVTEXT(")
 _MAX_DEPTH = 16
+_ASSET_NAME_RE = re.compile(r"[A-Za-z0-9_-]+")
 
 
 # Reflection helpers. Python has no property listing API, but the generated
@@ -190,9 +191,17 @@ def _require_writable(path):
     mod = _require_active_mod()
     if mod in _config().get("protected_mods", []):
         raise PermissionError("Mod '{}' is protected in config.json, so it cannot be changed.".format(mod))
+    segments = path.split("/")[1:]
+    if "\\" in path or any(segment in ("", ".", "..") for segment in segments):
+        raise PermissionError("{} is not a plain content path. Refusing to write.".format(path))
     if not (path + "/").startswith("/{}/".format(mod)):
         raise PermissionError("{} is outside the active mod (/{}). Refusing to write.".format(path, mod))
     return mod
+
+
+def _require_asset_name(name):
+    if not _ASSET_NAME_RE.fullmatch(str(name)):
+        raise ValueError("Invalid name '{}': use only letters, digits, - and _.".format(name))
 
 
 def _load(path):
@@ -219,7 +228,9 @@ def _describe(data):
 
 def cmd_status():
     mod = _active_mod()
+    config = unreal.AbioticFactorEditorCookedFunctionLibrary.get_active_mod_configuration()
     return {
+        "mod_prefix": str(config.get_editor_property("mod_prefix")) if config else None,
         "engine_version": unreal.SystemLibrary.get_engine_version(),
         "project": unreal.SystemLibrary.get_game_name(),
         "python": sys.version.split()[0],
@@ -301,6 +312,8 @@ def _row_asset_class(name):
 
 
 def _open_row_asset(cls, table, row_name):
+    _require_asset_name(table)
+    _require_asset_name(row_name)
     mod = _require_active_mod()
     package_dir = "/{}/DataTables/{}".format(mod, table)
     path = "{}/{}".format(package_dir, row_name)
@@ -358,6 +371,9 @@ def cmd_duplicate_asset(source, destination):
     copy = unreal.EditorAssetLibrary.duplicate_asset(source, destination)
     if copy is None:
         raise RuntimeError("Could not duplicate {}".format(source))
+    # A copied row asset keeps the source's row name, which would collide with it.
+    if isinstance(copy, unreal.AbioticModRowAsset):
+        copy.set_editor_property("row_name", destination.rsplit("/", 1)[1])
     return {"path": destination, "saved": False}
 
 
@@ -379,7 +395,27 @@ def cmd_validate_mod():
     assets = _registry().get_assets_by_path("/" + mod, recursive=True)
     subsystem = unreal.get_editor_subsystem(unreal.EditorValidatorSubsystem)
     failures, _, results = subsystem.validate_assets_with_settings(assets)
-    return {"mod": mod, "assets_with_issues": failures, "results": to_json(results)}
+    return {
+        "mod": mod,
+        "assets_with_issues": failures,
+        "results": to_json(results),
+        "duplicate_rows": _duplicate_rows(assets),
+    }
+
+
+def _duplicate_rows(assets):
+    """Find rows that share a name. The editor only warns about these once per session."""
+    seen = {}
+    for data in assets:
+        asset = data.get_asset()
+        if isinstance(asset, unreal.AbioticModRowAsset):
+            key = (type(asset).__name__, str(asset.get_editor_property("row_name")))
+            seen.setdefault(key, []).append(str(data.package_name))
+    return [
+        {"row_asset_class": key[0], "row_name": key[1], "assets": found}
+        for key, found in seen.items()
+        if len(found) > 1
+    ]
 
 
 def cmd_list_templates():

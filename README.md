@@ -76,7 +76,7 @@ If the client can't find the command, run `abiotic-mcp config` to get the block 
 | `run_python` | Run Python in the editor, for anything not covered |
 | `get_log` | Tail the editor log with auth codes and API keys removed |
 
-Mods store one asset per row, at `/<Mod>/DataTables/<Table>/<RowName>`. `upsert_datatable_rows` follows that layout.
+Mods store one asset per row, at `/<Mod>/DataTables/<Table>/<RowName>`. `upsert_datatable_rows` follows that layout. Fields you leave out of a new row get struct defaults, so to change part of a vanilla row, use `clone_row` with `override_existing_row` and the same row name, then set what differs.
 
 ## Configuration
 
@@ -99,7 +99,7 @@ Nothing is required. Optional settings go in `%USERPROFILE%\.abiotic-mcp\config.
 - **Packaging and uploading are yours.** The editor only offers packaging through its Package UGC dialog, so `package_mod` stops before that step. Nothing here uploads to mod.io.
 - **No deleting.** There is no delete tool.
 - **`create_mod`** depends on the editor exposing templates to scripting, which 1.5.0 currently doesn't. Create the mod in the Mod Browser for now.
-- **Validation details** go to the editor's message log, `validate_mod` only returns counts.
+- **Validation details** go to the editor's message log. `validate_mod` returns counts, plus any rows that share a name, because the editor only warns about those once per session.
 - Tested with editor 1.5.0 (UE 5.4.4). Other versions show a warning rather than failing outright.
 - Close open dialogs in the editor if a tool times out: commands run on the editor's main thread.
 

@@ -3,8 +3,7 @@
   "table": "DT_Recipes",
   "rows": [
     {
-      "row_name": "recipe_weapon_pipe",
-      "override_existing_row": true,
+      "row_name": "recipe_cheap_pipe",
       "values": {
         "item_to_create": { "row_name": "weapon_pipe" },
         "count_to_create": 1,

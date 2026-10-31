@@ -176,7 +176,8 @@ def package_mod() -> dict:
         "validation": validation,
         "packaged": False,
         "next_step": "The Mod Management Tool is now open in the editor. The user creates or links the "
-        "mod there and presses Upload Mod. Choose the Testing mod type to try it out first.",
+        "mod there and presses Upload Mod. Choose the Testing mod type to try it out first. The listing "
+        "image must be larger than the ones in the mod's Media folder, at least 1024x576 is safe.",
     }
 
 

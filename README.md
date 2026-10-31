@@ -97,7 +97,7 @@ Nothing is required. Optional settings go in `%USERPROFILE%\.abiotic-mcp\config.
 
 - **Writes stay in the open mod.** Write tools refuse any other path, including `/Game`. `run_python` is not limited this way, so treat it like any other code you run on your PC.
 - **Blueprint filter.** Deep Field restricts which Blueprint nodes mods can use. `check_blueprint_symbol` reads their published list, and clients should check it before generating Blueprint logic. The editor has the final say. This server can't inspect Blueprint graphs for you.
-- **Packaging and uploading are yours.** Packaging is part of the editor's upload flow, so `package_mod` saves, validates and opens the editor's Mod Management Tool, then stops. Nothing here creates a mod.io page or uploads anything.
+- **Packaging and uploading are yours.** Packaging is part of the editor's upload flow, so `package_mod` saves, validates and opens the editor's Mod Management Tool, then stops. Nothing here creates a mod.io page or uploads anything. mod.io rejects the 128x128 and 400x200 images in a new mod's `Media` folder, so use a listing image of at least 1024x576.
 - **No deleting.** There is no delete tool.
 - **`create_mod`** depends on the editor exposing templates to scripting, which 1.5.0 currently doesn't. Create the mod in the Mod Browser for now.
 - **Validation details** go to the editor's message log. `validate_mod` returns counts, plus any rows that share a name, because the editor only warns about those once per session.

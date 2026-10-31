@@ -1,0 +1,26 @@
+[project]
+name = "abiotic-mcp"
+version = "0.1.0"
+description = "MCP server for the Abiotic Factor Mod Editor"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+dependencies = ["mcp>=2,<3"]
+
+[project.scripts]
+abiotic-mcp = "abiotic_mcp.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/abiotic_mcp"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

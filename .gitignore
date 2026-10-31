@@ -1,0 +1,12 @@
+PLAN.md
+RECON.md
+CLAUDE.md
+.claude/
+*.log
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+dist/
+build/
+*.egg-info/

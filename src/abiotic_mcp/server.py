@@ -163,20 +163,27 @@ def create_mod(name: str, template: str, substitutions: dict | None = None) -> d
 
 @mcp.tool()
 def package_mod() -> dict:
-    """Save and validate the active mod, then explain how to package it.
+    """Save and validate the active mod, open the upload panel, and explain the next step.
 
-    The editor only offers packaging through its own dialog, so this stops
-    there. It never uploads anything to mod.io.
+    Packaging happens inside the editor's upload flow, so this stops before it.
+    It never creates a mod.io page or uploads anything.
     """
     saved = bridge.call("save_all")
     validation = bridge.call("validate_mod")
+    bridge.call("open_mod_panel")
     return {
         "saved": saved,
         "validation": validation,
         "packaged": False,
-        "next_step": "In the Mod Editor, use the Package UGC action, choose platforms and an output "
-        "folder. Upload the result to mod.io yourself from the editor.",
+        "next_step": "The Mod Management Tool is now open in the editor. The user creates or links the "
+        "mod there and presses Upload Mod. Choose the Testing mod type to try it out first.",
     }
+
+
+@mcp.tool()
+def open_mod_panel() -> dict:
+    """Open the editor's Mod Management Tool. It presses nothing and uploads nothing."""
+    return bridge.call("open_mod_panel")
 
 
 @mcp.tool()

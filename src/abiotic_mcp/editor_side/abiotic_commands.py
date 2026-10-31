@@ -418,6 +418,13 @@ def _duplicate_rows(assets):
     ]
 
 
+def cmd_open_mod_panel():
+    """Open the editor's Mod Management Tool. This only shows the panel."""
+    subsystem = unreal.get_editor_subsystem(unreal.EditorUtilitySubsystem)
+    subsystem.spawn_and_register_tab(_load("/Game/Editor/Mods/EUW_CreateAndUploadMod"))
+    return {"opened": True}
+
+
 def cmd_list_templates():
     subsystem = unreal.get_editor_subsystem(unreal.UGCTemplateSubsystem)
     return {"templates": [str(t.get_editor_property("name")) for t in subsystem.discover_templates()]}

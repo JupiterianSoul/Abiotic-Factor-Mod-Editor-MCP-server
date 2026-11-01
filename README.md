@@ -102,6 +102,7 @@ Nothing is required. Optional settings go in `%USERPROFILE%\.abiotic-mcp\config.
 - **`create_mod`** depends on the editor exposing templates to scripting, which 1.5.0 currently doesn't. Create the mod in the Mod Browser for now.
 - **Validation details** go to the editor's message log. `validate_mod` returns counts, plus any rows that share a name, because the editor only warns about those once per session.
 - Tested with editor 1.5.0 (UE 5.4.4). Other versions show a warning rather than failing outright.
+- **Early version: not yet tested in-game.** Edits have been tested in the editor, but no mod made with this server has been packaged or loaded in the game yet.
 - Close open dialogs in the editor if a tool times out: commands run on the editor's main thread.
 
 ## Uninstall

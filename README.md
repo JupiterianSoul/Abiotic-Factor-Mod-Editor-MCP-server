@@ -66,7 +66,7 @@ Your mods aren't touched.
 
 ## Credits
 
-Built on [abf-mod-editor-mcp](https://github.com/theelites11gamer/abf-mod-editor-mcp) by theelites11gamer, which does much of the heavy lifting. Thanks also to the Abiotic Factor modding community for [their guides](https://mod.io/g/abiotic-factor/r).
+Built on [abf-mod-editor-mcp](https://github.com/theelites11gamer/abf-mod-editor-mcp) by theelites11gamer. Thanks also to the Abiotic Factor modding community for [their guides](https://mod.io/g/abiotic-factor/r).
 
 This is an unofficial fan project, not affiliated with Deep Field Games, Playstack or mod.io.
 

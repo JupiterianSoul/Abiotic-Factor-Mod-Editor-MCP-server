@@ -175,6 +175,8 @@ def package_mod() -> dict:
         "saved": saved,
         "validation": validation,
         "packaged": False,
+        "test_first": "Before any upload, the user can test locally: load /Game/Maps/Facility, press Play "
+        "in the editor and check the change.",
         "next_step": "The Mod Management Tool is now open in the editor. The user creates or links the "
         "mod there and presses Upload Mod. Choose the Testing mod type to try it out first. The listing "
         "image must be larger than the ones in the mod's Media folder, at least 1024x576 is safe.",

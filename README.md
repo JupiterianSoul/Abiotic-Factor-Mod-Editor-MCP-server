@@ -79,6 +79,20 @@ If the client can't find the command, run `abiotic-mcp config` to get the block 
 
 Mods store one asset per row, at `/<Mod>/DataTables/<Table>/<RowName>`. `upsert_datatable_rows` follows that layout. Fields you leave out of a new row get struct defaults, so to change part of a vanilla row, use `clone_row` with `override_existing_row` and the same row name, then set what differs.
 
+## Testing a mod locally
+
+You don't need to package or upload a mod to try it:
+
+1. Open the mod in the editor and save your changes (`save_all`).
+2. Load a game map with File > Open Level, or ask your client to run this with `run_python`:
+   ```python
+   unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).load_level("/Game/Maps/Facility")
+   ```
+   `Facility` is a big map, so this can take a minute or two.
+3. Press Play in the editor and check your change. Press Esc to stop.
+
+This runs inside the editor, so it doesn't replace a final check of a packaged build in the game.
+
 ## Configuration
 
 Nothing is required. Optional settings go in `%USERPROFILE%\.abiotic-mcp\config.json`:
@@ -102,7 +116,7 @@ Nothing is required. Optional settings go in `%USERPROFILE%\.abiotic-mcp\config.
 - **`create_mod`** depends on the editor exposing templates to scripting, which 1.5.0 currently doesn't. Create the mod in the Mod Browser for now.
 - **Validation details** go to the editor's message log. `validate_mod` returns counts, plus any rows that share a name, because the editor only warns about those once per session.
 - Tested with editor 1.5.0 (UE 5.4.4). Other versions show a warning rather than failing outright.
-- **Early version: not yet tested in-game.** Edits have been tested in the editor, but no mod made with this server has been packaged or loaded in the game yet.
+- **Early version: not yet tested in a packaged build.** A recipe override made with this server worked in the editor's Play mode, but no mod made with it has been packaged or loaded in the game itself yet.
 - Close open dialogs in the editor if a tool times out: commands run on the editor's main thread.
 
 ## Uninstall
